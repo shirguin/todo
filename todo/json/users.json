@@ -1,0 +1,32 @@
+[
+  {
+    "username": "Ivan",
+    "first_name": "Иван",
+    "last_name": "Иванов",
+    "email": "ivanov@yandex.ru"
+  },
+  {
+    "username": "Alex",
+    "first_name": "Алексей",
+    "last_name": "Синицын",
+    "email": "alex@yandex.ru"
+  },
+  {
+    "username": "Mark",
+    "first_name": "Марк",
+    "last_name": "Рабинович",
+    "email": "mark@yandex.ru"
+  },
+  {
+    "username": "Elena",
+    "first_name": "Елена",
+    "last_name": "Сидорова",
+    "email": "elena@yandex.ru"
+  },
+  {
+    "username": "Mihail",
+    "first_name": "Михаил",
+    "last_name": "Потехин",
+    "email": "mihail@yandex.ru"
+  }
+]
