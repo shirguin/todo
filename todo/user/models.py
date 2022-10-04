@@ -9,7 +9,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=64, unique=True)
 
     def __str__(self):
-        return f'{self.lastname}-{self.firstname}'
+        return f'{self.last_name}-{self.first_name}'
 
     def delete(self, *args, **kwargs):
         self.is_active = False
