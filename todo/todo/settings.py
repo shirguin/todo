@@ -28,8 +28,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000',
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
+    "http://192.168.1.1:3000",
 ]
 
 
@@ -46,7 +47,6 @@ INSTALLED_APPS = [
     'user',
     'notes',
     'django_filters',
-
     'corsheaders',
 ]
 
@@ -152,6 +152,6 @@ REST_FRAMEWORK = {
         'djangorestframework_camel_case.parser.CamelCaseJSONParser',
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 100
 }
