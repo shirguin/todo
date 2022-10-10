@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from notes.models import Project
+from notes.models import Project, ToDo
 
 
 class ProjectFilter(filters.FilterSet):
@@ -9,3 +9,10 @@ class ProjectFilter(filters.FilterSet):
     class Meta:
         model = Project
         fields = '__all__'
+
+
+class ToDoFilter(filters.FilterSet):
+
+    class Meta:
+        model = ToDo
+        fields = ['project']
