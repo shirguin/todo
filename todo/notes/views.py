@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.renderers import JSONRenderer, BrowsableAPIRenderer
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -32,6 +33,7 @@ class ProjectLimitOffsetPagination(LimitOffsetPagination):
 class ProjectModelViewSet(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     filterset_class = ProjectFilter
     pagination_class = ProjectLimitOffsetPagination
 
@@ -44,6 +46,7 @@ class TodoModelViewSet(ModelViewSet):
     queryset = ToDo.objects.all()
     # queryset = ToDo.objects.filter(is_active=True)
     serializer_class = ToDoModelSerializer
+    renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     filterset_class = ToDoFilter
     pagination_class = ToDoLimitOffsetPagination
 
