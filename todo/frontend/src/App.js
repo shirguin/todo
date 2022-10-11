@@ -5,14 +5,16 @@ import UserList from "./components/User";
 import NoteList from "./components/Note";
 import ProjectList from "./components/Project";
 import Footer from "./components/Footer";
+import NotFound404 from "./components/NotFound404";
 import axios from "axios";
+import {BrowserRouter, Route, Routes, Link, Navigate} from "react-router-dom";
 
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            'menuItems': [],
+//            'menuItems': [],
             'users': [],
             'notes': [],
             'projects': [],
@@ -39,34 +41,53 @@ class App extends React.Component {
             })
         }).catch(error => console.log(error))
 
-        const menuItems = [
-            {'nameItem':'Главная',
-             'hrefItem': '#'
-            },
-              {'nameItem':'Список пользователей',
-             'hrefItem': '#'
-            },
-              {'nameItem':'Список заметок',
-             'hrefItem': '#'
-            },
-              {'nameItem':'Список проектов',
-             'hrefItem': '#'
-            }
-        ]
-
-        this.setState({
-        'menuItems': menuItems
-        })
+//        const menuItems = [
+//            {'nameItem':'Главная',
+//             'hrefItem': '#'
+//            },
+//              {'nameItem':'Список пользователей',
+//             'hrefItem': '#'
+//            },
+//              {'nameItem':'Список заметок',
+//             'hrefItem': '#'
+//            },
+//              {'nameItem':'Список проектов',
+//             'hrefItem': '#'
+//            }
+//        ]
+//
+//        this.setState({
+//        'menuItems': menuItems
+//        })
     }
-
+//                    <Menu menuItems = {this.state.menuItems} />
+//                            <Route exact path='/projects' element={<ProjectList projects = {this.state.projects} />} />
     render() {
         return (
             <div className="App">
                 <div className="content">
-                    <Menu menuItems = {this.state.menuItems} />
-                    <UserList users = {this.state.users} />
-                    <NoteList notes = {this.state.notes} />
-                    <ProjectList projects = {this.state.projects} />
+                    <BrowserRouter>
+                        <nav>
+                            <li>
+                                <Link to="/">Users</Link>
+                            </li>
+                            <li>
+                                <Link to="/projects/">Projects</Link>
+                            </li>
+                            <li>
+                                <Link to="/notes/">Notes</Link>
+                            </li>
+
+                        </nav>
+                        <Routes>
+                            <Route exact path='/' element={<UserList users = {this.state.users} />} />
+                            <Route exact path='/projects' element={<ProjectList projects = {this.state.projects} />} />
+                            <Route exact path='/notes' element={<NoteList notes = {this.state.notes} />} />
+
+
+                            <Route path='*' element={<NotFound404/>}/>
+                        </Routes>
+                    </BrowserRouter>
                 </div>
                 <Footer/>
             </div>
