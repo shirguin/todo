@@ -18,10 +18,9 @@ const ProjectList = ({projects}) => {
             <th>id</th>
             <th>Projectname</th>
             <th>Repository</th>
-            <th>UsersList</th>
+            <th>Users</th>
             {projects.map((project_) => <ProjectItem project = {project_} />)}
         </table>
-
     )
 }
 
