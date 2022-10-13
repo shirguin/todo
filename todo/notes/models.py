@@ -18,7 +18,7 @@ class ToDo(models.Model):
     text = models.TextField(blank=True, null=True)
     create_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
