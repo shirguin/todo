@@ -34,7 +34,7 @@ class ProjectModelViewSet(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
-    filterset_class = ProjectFilter
+    # filterset_class = ProjectFilter
     pagination_class = ProjectLimitOffsetPagination
 
 
@@ -44,15 +44,17 @@ class ToDoLimitOffsetPagination(LimitOffsetPagination):
 
 class TodoModelViewSet(ModelViewSet):
     queryset = ToDo.objects.all()
-    # queryset = ToDo.objects.filter(is_active=True)
     serializer_class = ToDoModelSerializer
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
-    filterset_class = ToDoFilter
+    # filterset_class = ToDoFilter
     pagination_class = ToDoLimitOffsetPagination
 
     def destroy(self, request, *args, **kwargs):
-        todo = self.get_object()
-        todo.is_active = False
-        todo.save()
-
-        return Response(status=status.HTTP_200_OK)
+        try:
+            instance = self.get_object()
+            instance.is_active = False
+            instance.save()
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
