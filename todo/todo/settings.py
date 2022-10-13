@@ -37,11 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
-    'user',
-    'notes',
     'django_filters',
     'corsheaders',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
+
+    'user',
+    'notes',
+
 ]
 
 MIDDLEWARE = [
@@ -150,7 +155,14 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 100
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+
 }
 
 CORS_ALLOWED_ORIGINS = [
