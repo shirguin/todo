@@ -8,6 +8,13 @@ from rest_framework.viewsets import ModelViewSet
 from notes.filters import ProjectFilter, ToDoFilter
 from notes.models import Project, ToDo
 from notes.serializers import ProjectModelSerializer, ToDoModelSerializer
+from rest_framework.permissions import AllowAny, BasePermission
+
+
+class SuperUserOnly(BasePermission):
+
+    def has_permission(self, request, view):
+        return request.user.is_superuser
 
 
 class ProjectLimitOffsetPagination(LimitOffsetPagination):
@@ -48,6 +55,7 @@ class TodoModelViewSet(ModelViewSet):
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     # filterset_class = ToDoFilter
     pagination_class = ToDoLimitOffsetPagination
+    permission_classes = [SuperUserOnly]
 
     def destroy(self, request, *args, **kwargs):
         try:
