@@ -24,37 +24,49 @@ class App extends React.Component {
                 {'nameItem':'Главная', 'hrefItem': '#'},
                 {'nameItem':'Список пользователей', 'hrefItem': '/'},
                 {'nameItem':'Список проектов', 'hrefItem': 'projects/'},
-                {'nameItem':'Список заметок', 'hrefItem': 'notes/'},
-                {'nameItem':'Login', 'hrefItem': 'login/'}
+                {'nameItem':'Список заметок', 'hrefItem': 'notes/'}
+
             ],
             'users': [],
             'notes': [],
             'projects': [],
-            'token': ''
+            'token': '',
+            'username': ''
         }
     }
 
     logout(){
-
+//    Чистим состояние при выходе
+        this.set_token('')
+        this.setState({'users': []})
+        this.setState({'notes': []})
+        this.setState({'projects': []})
     }
 
     is_auth(){
-
+        return !!this.state.token
     }
 
     set_token(token){
+//    Сохраняем в LocalStorage
 //        localStorage.setItem('token', token)
+
+//    Сохраняем в куки
         const cookies = new Cookies()
         cookies.set('token', token)
-        this.setStage({'token': token}, () => this.load_data())
+        this.setState({'token': token}, () => this.load_data())
     }
 
     get_token_storage(){
-
+        const cookies = new Cookies()
+        const token = cookies.get('token')
+        this.setState({'token': token}, ()=> this.load_data())
     }
 
     get_token(username, password){
 //        console.log(username, password)
+//    Сохраняем имя пользователя в состоянии
+        this.setState({'username': username})
         const data = {username: username, password: password}
         axios.post('http://127.0.0.1:8000/api-token-auth/', data).then(response => {
             this.set_token(response.data['token'])
@@ -62,28 +74,36 @@ class App extends React.Component {
     }
 
     get_headers(){
-
+        let headers = {
+            'Content-Type': 'application/json'
+        }
+        if (this.is_auth()){
+            headers['Authorization'] = 'Token ' + this.state.token
+        }
+        return headers
     }
 
     load_data(){
-        axios.get(get_url('users/')).then(response => {
+        const headers = this.get_headers()
+        axios.get(get_url('users/'), {headers}).then(response => {
 //            console.log(response.data)
             this.setState({'users': response.data})
         }).catch(error => console.log(error))
 
-        axios.get(get_url('notes/')).then(response => {
+        axios.get(get_url('notes/'), {headers}).then(response => {
 //            console.log(response.data)
             this.setState({'notes': response.data.results})
         }).catch(error => console.log(error))
 
-        axios.get(get_url('projects/')).then(response => {
+        axios.get(get_url('projects/'), {headers}).then(response => {
 //            console.log(response.data)
             this.setState({'projects': response.data.results})
         }).catch(error => console.log(error))
     }
 
     componentDidMount() {
-        this.load_data()
+//        this.load_data()
+        this.get_token_storage()
     }
 
     render() {
@@ -92,6 +112,9 @@ class App extends React.Component {
                 <div className="App">
                     <div className="content">
                         <Menu menuItems = {this.state.menuItems} />
+                        <li>
+                            {this.is_auth() ? <button onClick={() => this.logout()}>({this.state.username})  Выйти</button> : <Link to='/login'>Войти</Link>}
+                        </li>
                         <Routes>
                             <Route exact path='/' element={<UserList users = {this.state.users} />} />
 
