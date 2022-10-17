@@ -55,7 +55,7 @@ class TodoModelViewSet(ModelViewSet):
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     # filterset_class = ToDoFilter
     pagination_class = ToDoLimitOffsetPagination
-    permission_classes = [SuperUserOnly]
+    # permission_classes = [SuperUserOnly]
 
     def destroy(self, request, *args, **kwargs):
         try:
