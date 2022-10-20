@@ -9,12 +9,12 @@ from .serializers import UserModelSerializer
 from .models import User
 
 
-# class UserModelViewSet(ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserModelSerializer
-
-
-class UserCustomViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class UserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
-    renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
+
+
+# class UserCustomViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserModelSerializer
+#     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]

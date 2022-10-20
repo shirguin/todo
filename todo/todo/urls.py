@@ -19,7 +19,7 @@ from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 
 from notes.views import ProjectModelViewSet, TodoModelViewSet
-from user.views import UserCustomViewSet
+from user.views import UserModelViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -28,8 +28,8 @@ from rest_framework_simplejwt.views import (
 
 
 router = DefaultRouter()
-# router.register('users', UserModelViewSet)
-router.register('users', UserCustomViewSet)
+router.register('users', UserModelViewSet)
+# router.register('users', UserCustomViewSet)
 router.register('projects', ProjectModelViewSet)
 router.register('notes', TodoModelViewSet)
 
