@@ -42,7 +42,7 @@ class ProjectModelViewSet(ModelViewSet):
     serializer_class = ProjectModelSerializer
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
     # filterset_class = ProjectFilter
-    pagination_class = ProjectLimitOffsetPagination
+    # pagination_class = ProjectLimitOffsetPagination
 
 
 class ToDoLimitOffsetPagination(LimitOffsetPagination):
