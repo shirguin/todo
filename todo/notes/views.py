@@ -7,7 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from notes.filters import ProjectFilter, ToDoFilter
 from notes.models import Project, ToDo
-from notes.serializers import ProjectModelSerializer, ToDoModelSerializer
+from notes.serializers import ProjectModelSerializer, ToDoModelSerializer, ToDoBaseModelSerializer
 from rest_framework.permissions import AllowAny, BasePermission
 
 
@@ -66,3 +66,8 @@ class TodoModelViewSet(ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_serializer_class(self):
+        if self.request.version == 'v2':
+            return ToDoBaseModelSerializer
+        return ToDoModelSerializer
