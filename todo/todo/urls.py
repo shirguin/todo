@@ -15,15 +15,34 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
+from drf_yasg import openapi
 from rest_framework.authtoken import views
+from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
+# from rest_framework.schemas import get_schema_view, openapi
+
+from drf_yasg.views import get_schema_view
 
 from notes.views import ProjectModelViewSet, TodoModelViewSet
-from user.views import UserModelViewSet
+from user.views import UserModelViewSet, UserListAPIView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView
+)
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='Todo',
+        default_version='v1',
+        description='Test api',
+        contact=openapi.Contact(email='admin@mail.ru'),
+        license=openapi.License(name="MIT License"),
+    ),
+    public=True,
+    permission_classes=(AllowAny,),
 )
 
 
@@ -45,5 +64,21 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
+    # path('api/<str:version>/users/', UserListAPIView.as_view()),
+    path('api/users/v1', include('user.urls', namespace='v1')),
+    path('api/users/v2', include('user.urls', namespace='v2')),
 
+    path('swagger<str:format>/', schema_view.without_ui()),
+    path('swagger/', schema_view.with_ui('swagger')),
+    path('redoc/', schema_view.with_ui('redoc')),
+
+    path('swagger-ui/', TemplateView.as_view(
+        template_name='swagger-ui.html',
+        extra_context={'schema_url': 'openapi-schema'}
+    ), name='swagger-ui'),
+
+    path('redoc/', TemplateView.as_view(
+        template_name='redoc.html',
+        extra_context={'schema_url': 'openapi-schema'}
+    ), name='redoc'),
 ]
