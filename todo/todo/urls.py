@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from drf_yasg import openapi
+from graphene_django.views import GraphQLView
 from rest_framework.authtoken import views
 from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
@@ -81,4 +82,6 @@ urlpatterns = [
         template_name='redoc.html',
         extra_context={'schema_url': 'openapi-schema'}
     ), name='redoc'),
+
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
 ]
