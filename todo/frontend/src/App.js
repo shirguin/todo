@@ -9,7 +9,7 @@ import NotFound404 from "./components/NotFound404";
 import ProjectDetail from "./components/ProjectDetail";
 import LoginForm from "./components/Auth";
 import axios from "axios";
-import {BrowserRouter, Route, Routes, Link, Navigate} from "react-router-dom";
+import {BrowserRouter, Route, Routes, Link} from "react-router-dom";
 import Cookies from "universal-cookie";
 
 
@@ -97,7 +97,23 @@ class App extends React.Component {
 
         axios.get(get_url('projects/'), {headers}).then(response => {
 //            console.log(response.data)
-            this.setState({'projects': response.data.results})
+            this.setState({'projects': response.data})
+        }).catch(error => console.log(error))
+    }
+
+    deleteProject(id) {
+        const headers = this.get_headers()
+        axios.delete(get_url(`projects/${id}`), {headers})
+        .then(response => {
+        this.setState({projects: this.state.projects.filter((item)=>item.id !== id)})
+        }).catch(error => console.log(error))
+    }
+
+    deleteNote(id) {
+        const headers = this.get_headers()
+        axios.delete(get_url(`notes/${id}`), {headers})
+        .then(response => {
+        this.setState({notes: this.state.notes.filter((item)=>item.id !== id)})
         }).catch(error => console.log(error))
     }
 
@@ -119,11 +135,11 @@ class App extends React.Component {
                             <Route exact path='/' element={<UserList users = {this.state.users} />} />
 
                             <Route exact path='/projects'>
-                                <Route index exact path='/projects' element={<ProjectList projects = {this.state.projects} />} />
+                                <Route index exact path='/projects' element={<ProjectList projects = {this.state.projects} deleteProject = {(id) => this.deleteProject(id)} />} />
                                 <Route path=':projectId' element={<ProjectDetail projects = {this.state.projects} />} />
                             </Route>
 
-                            <Route exact path='/notes' element={<NoteList notes = {this.state.notes} />} />
+                            <Route exact path='/notes' element={<NoteList notes = {this.state.notes} deleteNote = {(id) => this.deleteNote(id)} />} />
                             <Route exact path='/login' element={<LoginForm get_token = {(username, password) => this.get_token(username, password)} />} />
 
                             <Route path='*' element={<NotFound404/>}/>

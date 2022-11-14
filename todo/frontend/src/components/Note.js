@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const NoteItem = ({note}) =>{
+const NoteItem = ({note, deleteNote}) =>{
     return(
         <tr>
             <td>{note.id}</td>
@@ -9,11 +9,12 @@ const NoteItem = ({note}) =>{
             <td>{note.text}</td>
             <td>{note.create_date}</td>
             <td>{note.update_date}</td>
+            <td><button onClick={()=>deleteNote(note.id)} type='button'>Удалить</button></td>
         </tr>
     )
 }
 
-const NoteList = ({notes}) => {
+const NoteList = ({notes, deleteNote}) => {
     return(
         <table className="usersTable">
             <th>id</th>
@@ -21,7 +22,8 @@ const NoteList = ({notes}) => {
             <th>Text</th>
             <th>Created</th>
             <th>Updated</th>
-            {notes.map((note_) => <NoteItem note = {note_} />)}
+            <th></th>
+            {notes.map((note_) => <NoteItem note = {note_} deleteNote = {deleteNote}/>)}
         </table>
 
     )
