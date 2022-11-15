@@ -127,10 +127,6 @@ class App extends React.Component {
         })
     }
 
-    updateProject(id) {
-        console.log("update project")
-    }
-
     deleteNote(id) {
         const headers = this.get_headers()
         axios.delete(get_url(`notes/${id}`), {headers})
@@ -174,16 +170,16 @@ class App extends React.Component {
                             <Route exact path='/' element={<UserList users = {this.state.users} />} />
 
                             <Route exact path='/projects'>
+
                                 <Route index exact path='/projects' element={<ProjectList projects = {this.state.projects}
                                     deleteProject = {(id) => this.deleteProject(id)} updateProject = {(id) => this.updateProject(id)} />} />
+
                                 <Route path=':projectId' element={<ProjectDetail projects = {this.state.projects} />} />
+
                                 <Route exact path='/projects/create' element={<ProjectForm users={this.state.users}
                                     createProject={(name, users_list) => this.createProject(name, users_list)}/>}/>
 
-                                <Route exact path='/project/update' element={<ProjectUpdateForm projects = {this.state/projects} projectId = useParams() />}/>
-
                             </Route>
-
 
                             <Route exact path='/notes' element={<NoteList notes = {this.state.notes} deleteNote = {(id) => this.deleteNote(id)} />} />
                             <Route exact path='/notes/create' element={<NoteForm projects={this.state.projects} users={this.state.users} createNote={(project, text, user) => this.createNote(project, text, user)}/>}/>
