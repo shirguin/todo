@@ -8,6 +8,8 @@ import Footer from "./components/Footer";
 import NotFound404 from "./components/NotFound404";
 import ProjectDetail from "./components/ProjectDetail";
 import LoginForm from "./components/Auth";
+import ProjectForm from "./components/ProjectForm";
+import NoteForm from "./components/NoteForm";
 import axios from "axios";
 import {BrowserRouter, Route, Routes, Link} from "react-router-dom";
 import Cookies from "universal-cookie";
@@ -109,12 +111,49 @@ class App extends React.Component {
         }).catch(error => console.log(error))
     }
 
+    createProject(name, users_list){
+        const headers = this.get_headers()
+        const data = {
+            name: name,
+            users_list: users_list
+        }
+//        console.log(data)
+
+        axios.post(get_url('projects/'), data, {headers}).then(response => {
+            this.load_data()
+        }).catch(error => {
+            console.log(error);
+            this.setState({projects:[]})
+        })
+    }
+
+    updateProject(id) {
+        console.log("update project")
+    }
+
     deleteNote(id) {
         const headers = this.get_headers()
         axios.delete(get_url(`notes/${id}`), {headers})
         .then(response => {
         this.setState({notes: this.state.notes.filter((item)=>item.id !== id)})
         }).catch(error => console.log(error))
+    }
+
+    createNote(project, text, user) {
+        const headers = this.get_headers()
+        const data = {
+            project: project,
+            text: text,
+            user: user
+        }
+        console.log(data)
+
+        axios.post(get_url('notes/'), data, {headers}).then(response => {
+            this.load_data()
+        }).catch(error => {
+            console.log(error);
+            this.setState({notes:[]})
+        })
     }
 
     componentDidMount() {
@@ -135,11 +174,19 @@ class App extends React.Component {
                             <Route exact path='/' element={<UserList users = {this.state.users} />} />
 
                             <Route exact path='/projects'>
-                                <Route index exact path='/projects' element={<ProjectList projects = {this.state.projects} deleteProject = {(id) => this.deleteProject(id)} />} />
+                                <Route index exact path='/projects' element={<ProjectList projects = {this.state.projects}
+                                    deleteProject = {(id) => this.deleteProject(id)} updateProject = {(id) => this.updateProject(id)} />} />
                                 <Route path=':projectId' element={<ProjectDetail projects = {this.state.projects} />} />
+                                <Route exact path='/projects/create' element={<ProjectForm users={this.state.users}
+                                    createProject={(name, users_list) => this.createProject(name, users_list)}/>}/>
+
+                                <Route exact path='/project/update' element={<ProjectUpdateForm projects = {this.state/projects} projectId = useParams() />}/>
+
                             </Route>
 
+
                             <Route exact path='/notes' element={<NoteList notes = {this.state.notes} deleteNote = {(id) => this.deleteNote(id)} />} />
+                            <Route exact path='/notes/create' element={<NoteForm projects={this.state.projects} users={this.state.users} createNote={(project, text, user) => this.createNote(project, text, user)}/>}/>
                             <Route exact path='/login' element={<LoginForm get_token = {(username, password) => this.get_token(username, password)} />} />
 
                             <Route path='*' element={<NotFound404/>}/>

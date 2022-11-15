@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const ProjectItem = ({project, deleteProject}) =>{
+const ProjectItem = ({project, deleteProject, updateProject}) =>{
     return(
         <tr>
             <td>{project.id}</td>
@@ -11,20 +11,27 @@ const ProjectItem = ({project, deleteProject}) =>{
             <td>{project.link_repository}</td>
             <td>{project.users_list}</td>
             <td><button onClick={()=>deleteProject(project.id)} type='button'>Удалить</button></td>
+
+            <td><Link to={{pathname:"/project/update", propsProjectId: project.id}}>Изменить</Link></td>
         </tr>
     )
 }
 
-const ProjectList = ({projects, deleteProject}) => {
+const ProjectList = ({projects, deleteProject, updateProject}) => {
     return(
-        <table className="usersTable">
-            <th>id</th>
-            <th>Projectname</th>
-            <th>Repository</th>
-            <th>Users</th>
-            <th></th>
-            {projects.map((project_) => <ProjectItem project = {project_} deleteProject = {deleteProject}/>)}
-        </table>
+        <div>
+            <table className="usersTable">
+                <th>id</th>
+                <th>Projectname</th>
+                <th>Repository</th>
+                <th>Users</th>
+                <th></th>
+                <th></th>
+                {projects.map((project_) => <ProjectItem project = {project_} deleteProject = {deleteProject} updateProject = {updateProject}/>)}
+            </table>
+            <Link to='/projects/create'>Создать новый проект</Link>
+        </div>
+
     )
 }
 
