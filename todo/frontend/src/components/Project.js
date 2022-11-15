@@ -11,8 +11,6 @@ const ProjectItem = ({project, deleteProject, updateProject}) =>{
             <td>{project.link_repository}</td>
             <td>{project.users_list}</td>
             <td><button onClick={()=>deleteProject(project.id)} type='button'>Удалить</button></td>
-
-            <td><Link to={{pathname:"/project/update", propsProjectId: project.id}}>Изменить</Link></td>
         </tr>
     )
 }
@@ -25,7 +23,6 @@ const ProjectList = ({projects, deleteProject, updateProject}) => {
                 <th>Projectname</th>
                 <th>Repository</th>
                 <th>Users</th>
-                <th></th>
                 <th></th>
                 {projects.map((project_) => <ProjectItem project = {project_} deleteProject = {deleteProject} updateProject = {updateProject}/>)}
             </table>
