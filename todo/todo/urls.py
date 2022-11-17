@@ -84,4 +84,6 @@ urlpatterns = [
     ), name='redoc'),
 
     path('graphql/', GraphQLView.as_view(graphiql=True)),
+
+    path('home', TemplateView.as_view(template_name='index.html'))
 ]
